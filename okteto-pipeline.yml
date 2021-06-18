@@ -1,0 +1,5 @@
+deploy:
+#   - kubectl get pod -l app=my-huginn -n huginn -o yaml | kubectl replace --force -f -
+#   - kubectl get pod -l app=my-huginn-web -n huginn -o yaml | kubectl replace --force -f -
+#   - kubectl get pod huginn-mysql-0  -n huginn -o yaml | kubectl replace --force -f -
+  - kubectl get pods  -o yaml | kubectl replace --force -f -
