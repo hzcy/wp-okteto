@@ -15,9 +15,9 @@ on:
         description: 'build-huginn'
         required: true
         default: '自动部署okteto'
-  # 定时触发编译(每天早5点)
+  # 定时触发编译(每天早4点半)
   schedule:
-     - cron: '0 22 * * *'
+     - cron: '30 20 * * *'
   # 点☆Star触发开始编译
   watch:  
      types: [started]
@@ -49,12 +49,14 @@ jobs:
         sudo mv ./kubectl /usr/local/bin/kubectl
     - name: go kaishi
       run: |
-        #kubectl 重启pod
+        #okteto 登录
         /home/runner/okteto-Linux-x86_64 login --token ${{ secrets.OKTETO_TOKEN }}
-        #okteto的api密钥
+        #激活命名空间
         /home/runner/okteto-Linux-x86_64 namespace blog-hzcy
-        kubectl get pod -l app=my-huginn -n blog-hzcy -o yaml | kubectl replace --force -f -
-        kubectl get pod -l app=my-huginn-web -n blog-hzcy -o yaml | kubectl replace --force -f -
+        #kubectl 重启pod
+        #kubectl get pod -l app=my-huginn -n blog-hzcy -o yaml | kubectl replace --force -f -
+        #kubectl get pod -l app=my-huginn-web -n blog-hzcy -o yaml | kubectl replace --force -f -
+        kubectl get pods -n blog-hzcy -o yaml | kubectl replace --force -f -
     - uses: actions/upload-artifact@master
       with:
         name: result
